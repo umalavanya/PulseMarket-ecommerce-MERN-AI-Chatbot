@@ -1,0 +1,45 @@
+# Dependencies
+backend/node_modules/
+frontend/node_modules/
+resources
+# Environment variables and local secrets
+.env
+.env.*
+!.env.example
+
+# Production and preview builds
+dist/
+build/
+
+# Logs and debug output
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Generated Vite files
+vite.config.js.timestamp-*
+
+# Coverage and test output
+coverage/
+.nyc_output/
+
+# Runtime and temporary files
+*.pid
+*.seed
+*.tmp
+*.temp
+.cache/
+
+# IDE and editor files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# Operating system files
+.DS_Store
+Thumbs.db

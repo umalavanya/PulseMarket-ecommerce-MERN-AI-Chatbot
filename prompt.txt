@@ -1,0 +1,275 @@
+Build a full-stack, production-quality E-Commerce web application called "ShopSphere" 
+using the MERN stack. Style it like Amazon (colors, layout, UX patterns). This is a 
+resume-worthy portfolio project — prioritize clean architecture, real-world features, 
+DSA implementations, and interview-ready code. Follow EXACTLY.
+
+═══════════════════════════════════════════════════════
+🎯 TECH STACK (STRICT)
+═══════════════════════════════════════════════════════
+Frontend:
+- React 18 + Vite
+- React Router DOM v6 (nested + protected + lazy routes)
+- Context API (Auth, Theme, Cart)
+- Redux Toolkit (products, filters, orders)
+- Axios (with interceptors for JWT refresh)
+- Lucide React (ONLY icon library — no others)
+- Plain CSS + CSS variables (NO Tailwind, NO styled-components)
+
+Backend:
+- Node.js + Express.js
+- MongoDB + Mongoose
+- bcryptjs (salt rounds 12)
+- jsonwebtoken (access 15m + refresh 7d)
+- cors, dotenv, morgan, express-validator, cookie-parser, helmet, express-rate-limit
+- Multer (local image upload in dev)
+
+═══════════════════════════════════════════════════════
+🎨 COLOR THEME (AMAZON-INSPIRED)
+═══════════════════════════════════════════════════════
+Light theme:
+  --color-primary: #131921        (Amazon dark navy — navbar)
+  --color-secondary: #232f3e      (secondary navbar / footer)
+  --color-accent: #ff9900         (Amazon orange — buttons, CTAs)
+  --color-accent-hover: #e88b00
+  --color-bg: #eaeded             (light gray page background)
+  --color-card: #ffffff
+  --color-text: #0f1111
+  --color-text-muted: #565959
+  --color-link: #007185           (Amazon teal link)
+  --color-success: #067d62
+  --color-danger: #b12704
+  --color-star: #ffa41c
+
+Dark theme:
+  --color-bg: #0f1111
+  --color-card: #1c1c1c
+  --color-text: #e7e9ec
+  --color-text-muted: #a0a4a8
+  --color-primary: #232f3e
+
+Layout must mirror Amazon:
+- Top navbar: logo left, search bar center (with category dropdown + orange search button), 
+  account & cart icons right, secondary navbar below with category links
+- Product cards: white bg, thin border, hover lift, orange "Add to Cart" button
+- Buttons: rounded, orange primary with subtle gradient
+- Rating: orange stars
+- Breadcrumbs on every page
+- Footer: 4-column Amazon-style, dark navy background
+- Font: system-ui / -apple-system stack
+
+═══════════════════════════════════════════════════════
+📁 PROJECT STRUCTURE
+═══════════════════════════════════════════════════════
+shopsphere/
+├── client/
+│   └── src/
+│       ├── api/            (axios instance + endpoints)
+│       ├── components/     (Navbar, SearchBar, ProductCard, Pagination, FilterSidebar,
+│       │                    ThemeToggle, Loader, Toast, Modal, StarRating, Breadcrumb,
+│       │                    ProtectedRoute, RoleRoute, Footer, CartDrawer)
+│       ├── context/        (AuthContext, ThemeContext, CartContext)
+│       ├── redux/          (store, productsSlice, filtersSlice, ordersSlice)
+│       ├── hooks/          (useDebounce, useAuth, useCart, usePagination)
+│       ├── pages/          (Home, Login, Register, Products, ProductDetails, Cart,
+│       │                    Checkout, Orders, OrderDetails, Dashboard, AdminDashboard,
+│       │                    NotFound, Unauthorized)
+│       ├── routes/         (AppRoutes.jsx)
+│       ├── utils/          (formatters, validators, constants)
+│       ├── styles/         (global.css, theme.css, variables.css)
+│       ├── App.jsx
+│       └── main.jsx
+└── server/
+    ├── config/       (db.js)
+    ├── controllers/  (auth, product, order, cart, user, review)
+    ├── middleware/   (authMiddleware, roleMiddleware, errorHandler, validateRequest, rateLimiter)
+    ├── models/       (User, Product, Order, Cart, Review)
+    ├── routes/       (authRoutes, productRoutes, orderRoutes, cartRoutes, userRoutes, reviewRoutes)
+    ├── utils/        (generateToken, ApiError, ApiResponse, slugify)
+    ├── algorithms/   (trie.js, sorting.js, search.js, recommendations.js, priorityQueue.js, lruCache.js)
+    ├── seed/         (seedProducts.js, seedUsers.js)
+    ├── .env
+    └── server.js
+
+═══════════════════════════════════════════════════════
+🔐 AUTHENTICATION & ROLE-BASED ACCESS
+═══════════════════════════════════════════════════════
+- Register page: name, email, password, confirm password with inline validation
+- Login page: email + password, show/hide toggle, "Remember me"
+- Access token in memory + refresh token in httpOnly cookie
+- Axios interceptor: silently refresh on 401 and retry original request
+- Roles: `user`, `seller`, `admin`
+- ProtectedRoute (auth-gated) + RoleRoute (role-gated)
+- Unauthorized page for role violations
+
+═══════════════════════════════════════════════════════
+🛒 E-COMMERCE FEATURES
+═══════════════════════════════════════════════════════
+HOME PAGE (Amazon-style):
+- Top banner carousel
+- 4-card category grid ("Shop by category")
+- "Deals of the day" horizontal scroll
+- Featured products grid
+- Recently viewed carousel (localStorage)
+
+PRODUCTS PAGE:
+- Sidebar filters: category (multi), price range slider, rating, brand, in-stock
+- Top bar: result count + sort dropdown (price asc/desc, newest, rating, popularity)
+- Grid layout (3-4 columns)
+- Server-side pagination (12 per page)
+- URL-synced filters (shareable URLs)
+- Debounced search (400ms)
+
+PRODUCT DETAILS PAGE:
+- 2-column layout: image gallery left, info right
+- Title, brand link, star rating with review count
+- Price with strikethrough MRP + discount %
+- Quantity selector, "Add to Cart" (orange), "Buy Now"
+- Bullet-point feature list
+- Reviews section (write/edit/delete own)
+- Related products (same category)
+
+CART (Amazon-style):
+- Slide-in cart drawer + full cart page
+- Qty +/-, remove, save for later
+- Subtotal card with "Proceed to checkout"
+- Promo code input
+
+CHECKOUT & ORDERS:
+- Shipping form (validated)
+- Payment method selector (COD / mock card / UPI)
+- Order summary
+- Place order → Order confirmation
+- Order history with status badges
+- OrderDetails: items, address, tracking timeline, cancel button (if pending)
+
+DASHBOARDS (role-based):
+- User: order stats, recent orders, wishlist, addresses
+- Seller: revenue chart (custom SVG), top products, low-stock alerts, product CRUD
+- Admin: users table, product approvals, order status controls, revenue overview
+
+═══════════════════════════════════════════════════════
+🌗 TOGGLE THEME
+═══════════════════════════════════════════════════════
+- Sun/Moon icon (Lucide) in navbar
+- Persist in localStorage + system preference fallback
+- Applied via `data-theme` attribute on <html>
+- CSS variables swap automatically
+- Smooth 200ms transition on color/background
+
+═══════════════════════════════════════════════════════
+🧠 DATA STRUCTURES & ALGORITHMS (RESUME GOLD)
+═══════════════════════════════════════════════════════
+Implement in `server/algorithms/` and `client/src/utils/`:
+
+1.  Trie             → autocomplete search suggestions (O(L) per lookup)
+2.  Merge Sort       → price sorting (stable, O(n log n))
+3.  Quick Sort       → rating sorting (in-place, O(n log n) avg)
+4.  Binary Search    → price range filter on sorted array (O(log n))
+5.  Hash Map         → O(1) category lookup
+6.  Set              → wishlist deduplication
+7.  LRU Cache        → recent product queries (capacity 50)
+8.  Min-Heap (PQ)    → "cheapest N items" + express-delivery order priority
+9.  Sliding Window   → trending products (last 7 days)
+10. BFS on Graph     → "customers also bought" recommendations
+11. Cosine Similarity→ content-based recommendations
+12. Debouncing       → useDebounce hook for search input
+
+Each file MUST include JSDoc with Time/Space complexity comments.
+
+═══════════════════════════════════════════════════════
+🗄️ MONGOOSE MODELS
+═══════════════════════════════════════════════════════
+User:    { name, email (unique+indexed), password (hashed), role (enum), avatar,
+           addresses[], wishlist[], createdAt }
+         - Pre-save hook: bcryptjs.hash(password, 12)
+         - Method: comparePassword(candidate)
+
+Product: { name (text index), slug, description, price, mrp, discount, category (indexed),
+           brand, images[], stock, rating, numReviews, sellerId (ref), tags[] }
+         - Compound index: { category: 1, price: 1 }
+         - Text index: { name: 'text', description: 'text' }
+
+Order:   { userId (ref+indexed), items[{ productId, qty, price }], totalAmount,
+           shippingAddress, paymentMethod, status (enum), timeline[] }
+
+Cart:    { userId (unique), items[], updatedAt }
+Review:  { userId, productId, rating, comment, createdAt }
+         - Compound unique index on (userId, productId)
+
+═══════════════════════════════════════════════════════
+🛡️ SECURITY & BEST PRACTICES
+═══════════════════════════════════════════════════════
+- helmet, express-rate-limit (100 req/15min; 5 for auth)
+- express-validator + mongo-sanitize on all inputs
+- CORS whitelist (localhost:5173 dev)
+- All secrets in .env (never commit)
+- Centralized error handler (no stack traces in prod)
+- Standard response: { success, message, data }
+- Mongoose transactions for order placement (stock decrement)
+
+═══════════════════════════════════════════════════════
+✨ EXTRA FEATURES (DIFFERENTIATORS)
+═══════════════════════════════════════════════════════
+- Coupon system (create, validate, apply)
+- Product comparison (up to 4 items side-by-side)
+- Wishlist with heart toggle on cards
+- Recently viewed (localStorage)
+- Custom SVG analytics charts (no chart library)
+- Invoice PDF download (jsPDF)
+- Multi-language scaffold (i18n JSON: en + hi)
+- SEO meta tags (react-helmet-async)
+- Accessibility: ARIA, keyboard nav, focus rings
+- Skeleton loaders + toast notifications (custom)
+- Toast provider (custom, no react-toastify)
+- Dark/light mode fully styled
+- Basic tests (Vitest for hooks, Jest for utils)
+
+═══════════════════════════════════════════════════════
+📦 DELIVERABLES
+═══════════════════════════════════════════════════════
+1. Complete file tree — every file fully implemented, no TODOs
+2. Seed script: 50+ realistic products across 8 categories, 3 users (user/seller/admin)
+3. .env.example for client + server
+4. Postman collection JSON for all APIs
+5. README.md with architecture diagram, API docs, setup steps, algorithm notes
+6. JSDoc comments on every non-trivial function
+
+═══════════════════════════════════════════════════════
+🎬 EXECUTION ORDER (ASK FOR CONFIRMATION BETWEEN PHASES)
+═══════════════════════════════════════════════════════
+Phase 1: Backend scaffold (server.js, DB, models, auth)
+Phase 2: Auth APIs + Postman test
+Phase 3: Product APIs (search/filter/pagination/algorithms)
+Phase 4: Cart, Order, Review APIs
+Phase 5: Vite + React scaffold + theme system + layout
+Phase 6: Auth pages + Context + protected routes
+Phase 7: Home + Products + Filters (Redux)
+Phase 8: ProductDetails + Cart + Checkout
+Phase 9: Dashboards (role-based)
+Phase 10: Theme toggle polish + animations + toast
+Phase 11: DSA utilities + tests
+Phase 12: Seed DB, README, final review
+
+Start by outputting the complete folder structure, then implement file-by-file. 
+After each phase, pause and ask: "Ready for next phase?"
+
+
+=================================================================
+## GOAL
+Add an AI-powered shopping assistant chatbot to this existing app WITHOUT 
+breaking any existing functionality.
+
+## AI FEATURES REQUIRED
+1. Product recommendations based on user queries
+   ("Show me running shoes under $100")
+2. Order status queries ("Where is my order #12345?")
+3. General shopping help ("What's your return policy?")
+4. Product comparison ("Compare iPhone 15 vs Samsung S24")
+
+## CONSTRAINTS
+- Do NOT modify existing routes/controllers
+- Add NEW files only, minimal changes to existing files
+- Use Google Gemini API (@google/generative-ai)
+- Chat should be available as a floating widget on all pages
+- Only logged-in users can access order-related queries
+=====================================================================
